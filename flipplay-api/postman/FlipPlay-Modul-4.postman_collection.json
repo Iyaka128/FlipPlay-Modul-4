@@ -1,0 +1,213 @@
+{
+  "info": {
+    "name": "FlipPlay - Demo Modul 4",
+    "description": "CRUD media, relationship User-Media, collection attach/detach, happy and failure paths.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "user_id",
+      "value": "1"
+    },
+    {
+      "key": "media_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Media CRUD",
+      "item": [
+        {
+          "name": "List media",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/media"
+          }
+        },
+        {
+          "name": "Search media by title",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/media?search=Blue"
+          }
+        },
+        {
+          "name": "Show media detail with users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/media/{{media_id}}"
+          }
+        },
+        {
+          "name": "Create media - happy path",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Your Name\",\n  \"type\": \"Anime\",\n  \"genre\": \"Romance, Fantasy\",\n  \"description\": \"Dua remaja terhubung melalui fenomena misterius.\",\n  \"cover_url\": \"https://example.com/your-name.jpg\",\n  \"release_year\": 2016\n}"
+            },
+            "url": "{{base_url}}/media"
+          }
+        },
+        {
+          "name": "Create media - validation failure (422)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\",\n  \"type\": \"Film\"\n}"
+            },
+            "url": "{{base_url}}/media"
+          }
+        },
+        {
+          "name": "Update media - happy path",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"genre\": \"Romance, Drama\"\n}"
+            },
+            "url": "{{base_url}}/media/{{media_id}}"
+          }
+        },
+        {
+          "name": "Delete media",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/media/{{media_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Collection Relationship",
+      "item": [
+        {
+          "name": "Show user collection",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/{{user_id}}/collection"
+          }
+        },
+        {
+          "name": "Attach media - happy path",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/{{user_id}}/collection/{{media_id}}"
+          }
+        },
+        {
+          "name": "Attach duplicate - failure (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/{{user_id}}/collection/{{media_id}}"
+          }
+        },
+        {
+          "name": "Detach media - happy path",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/{{user_id}}/collection/{{media_id}}"
+          }
+        },
+        {
+          "name": "Detach missing relationship - failure (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/users/{{user_id}}/collection/{{media_id}}"
+          }
+        }
+      ]
+    }
+  ]
+}
